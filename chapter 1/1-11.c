@@ -16,12 +16,12 @@ int main(int argc, char const *argv[])
 			if(idle==0){
 				printf("%c",c);
 			}
-			else if(idle==1){  //进入下一个单词的第一个字母  
-				printf("\n%c",c);
+			else if(idle==1){  //从非单词区域进入下一个单词的第一个字母  
+				printf("\n%c",c); //先换行以与上一个单词分开
 				idle=0;
 			}
 		}else if(c==' '||c=='\t'){
-			idle = 1;
+			idle = 1; //进入非单词区域
 			continue;
 		}else if(c=='\n'){ //结束
 			return 0;
