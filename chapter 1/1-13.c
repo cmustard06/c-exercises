@@ -33,7 +33,7 @@ int main(int argc, char const *argv[])
 	while((c=getchar())!=EOF){
 		if((c<='Z'&&c>='A')||(c<='z'&&c>='a')){
 			if(word_internal==0){ //下一个单词
-				printHistogram(word,al_num);
+				printHistogram(word,al_num); //打印前一个单词的直方图
 				al_num = 0;
 				index = 0;
 				//清空数组
@@ -50,10 +50,10 @@ int main(int argc, char const *argv[])
 			}
 			continue;
 		}else if(c=='\n'){
-			printHistogram(word,al_num);
+			printHistogram(word,al_num);//打印最后一个单词的直方图
+			return 0;
 		}
 	}
-
 
 	return 0;
 }
