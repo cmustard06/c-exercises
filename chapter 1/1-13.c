@@ -26,6 +26,7 @@ int main(int argc, char const *argv[])
 	for(i=0;i<MAXWORD;i++){
 		w1[i] = 0;
 	}
+	printf("Please input string:");
 	while((c=getchar())!=EOF){
 		if(c==' ' ||c=='\t' ||c=='\n'){  //在单词外部
 			state = OUT;
@@ -47,6 +48,7 @@ int main(int argc, char const *argv[])
 
 	maxvalue = 0;
 	for(i=1;i<MAXWORD;++i){
+		printf("%d\t",i);
 		if(w1[i]>maxvalue){
 			printf("%d\n",w1[i]);
 			maxvalue=w1[i];
@@ -60,8 +62,8 @@ int main(int argc, char const *argv[])
 			}else{
 				printf(" ");
 			}
-			putchar('\n');
 		}
+		putchar('\n');
 	}
 	for(i=1;i<MAXWORD;++i){
 		printf("%4d ",i);
