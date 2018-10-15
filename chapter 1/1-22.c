@@ -9,31 +9,35 @@
 
 #define MAXROWS 10
 #define MAXWORD 100
-int* find_blank(char *s);
+
+void find_blank(char *s,int blankloc[],int s_len);
 int split(char *s, int start, int end, char *retval);
+int entabs(char *s, int blankloc[], char *retval[],int find);
 
 int main(int args, char *argv[]) {
-	int pos = 0,front=-1;
+	//int pos = 0,front=-1;
 	char *retval[MAXROWS];
-	//char *s = "aaa a	aa  a"; //3  5 8
-	char *s = "abcdefg";
-	char *temp;
-	temp = (char *)calloc(strlen(s),sizeof(char));
-	if (split(s, 2, 6, temp)!=0) {
-		printf("%s",temp);
+	char *s = "aaa a	aa  a"; //3  5 8
+	// char *s = "abcdefg";
+	int temp[10];
+	// temp = (char *)calloc(strlen(s),sizeof(char));
+	find_blank(s,temp,10);
+	for(int i=0;i<10;i++){
+		printf("%d ", temp[i]);
 	}
+	entabs(s,temp,retval,3);
+
 	//释放空间
 	return 0;
 }
 /*
 * 找到字符串中空格的位置，需要手动释放空间
 */
-int* find_blank(char *s) {
+void find_blank(char *s,int blankloc[],int s_len) {
 	//在堆区开辟空间存放数组(若是在栈区存放数组,随着函数结束,数组名指向的地址存放的内容也会被系统释放,而堆上的空间是由程序员自动给予分配和释放的)
-	int *blankloc=(int *)calloc(MAXROWS,sizeof(int));  
 	int pos,isblank,index;
 	pos = 0, isblank = 0,index=0;
-	memset(blankloc, 0, sizeof(int)*MAXROWS);
+	memset(blankloc, -1, sizeof(int)*s_len);
 	while (*(s+pos) != '\0') {
 		if (*(s+pos) == ' '||*(s+pos)=='\t') {
 			if (isblank == 0) {
@@ -54,16 +58,25 @@ int* find_blank(char *s) {
 		printf("%d ",blankloc[pos]);
 	}
 	printf("\n");
-	return blankloc;
 }
 
 /*
 * 
 */
-int entabs(char *s, int blanloc[], char *retval[],int find) {
-	int pos=0,index=0;
-	char temp[MAXWORD];
+int entabs(char *s, int blankloc[], char *retval[],int find) {
+	int pos=0,index=0,r_index=0;
 
+	while(blankloc[index]!=-1){
+		if(find<blankloc[index]){
+			split(s,pos,blankloc[index],retval[r_index]);
+			printf("%s\n",retval[r_index]);
+			pos = blankloc[index];
+			//find = pos+blankloc[index];
+		}
+		index++;
+		r_index++;
+	}
+	return 1;
 }
 /*
 * 切片，完成返回1，失败返回0,retval为输出结果
