@@ -12,20 +12,15 @@
 
 void find_blank(char *s,int blankloc[],int s_len);
 int split(char *s, int start, int end, char *retval);
-int entabs(char *s, int blankloc[], char *retval[],int find);
-
+int entabs(char *s, int* blankloc, int find);
 int main(int args, char *argv[]) {
 	//int pos = 0,front=-1;
-	char *retval[MAXROWS];
-	char *s = "aaa a	aa  a"; //3  5 8
+	char *s = "abcd   jej kk"; //3  5 8
 	// char *s = "abcdefg";
 	int temp[10];
 	// temp = (char *)calloc(strlen(s),sizeof(char));
 	find_blank(s,temp,10);
-	for(int i=0;i<10;i++){
-		printf("%d ", temp[i]);
-	}
-	entabs(s,temp,retval,3);
+	entabs(s,temp,5);
 
 	//释放空间
 	return 0;
@@ -54,27 +49,36 @@ void find_blank(char *s,int blankloc[],int s_len) {
 		}
 		pos++;
 	}
-	for (pos = 0; pos < MAXROWS; pos++) {
+	/*for (pos = 0; pos < MAXROWS; pos++) {
 		printf("%d ",blankloc[pos]);
-	}
-	printf("\n");
+	}*/
+	
 }
 
 /*
 * 
 */
-int entabs(char *s, int blankloc[], char *retval[],int find) {
+int entabs(char *s, int* blankloc, int find) {
 	int pos=0,index=0,r_index=0;
-
-	while(blankloc[index]!=-1){
-		if(find<blankloc[index]){
-			split(s,pos,blankloc[index],retval[r_index]);
-			printf("%s\n",retval[r_index]);
-			pos = blankloc[index];
-			//find = pos+blankloc[index];
+	char *temp;
+	int s_len = strlen(s);
+	find = find - 1;
+	while (blankloc[index] != -1) {
+		if (find <= blankloc[index]) { //4
+			temp = (char *)calloc(blankloc[index] - pos+2, sizeof(char));
+			split(s, pos, blankloc[index], temp);
+			printf("%s\n",temp);
+			free(temp);
+			pos = pos + blankloc[index];//4
 		}
 		index++;
-		r_index++;
+		if (pos > find) {
+			temp = (char *)calloc(s_len - pos + 2, sizeof(char)); //下标+1为长度，再加1为\0
+			split(s, pos, s_len, temp);
+			printf("%s\n",temp);
+			free(temp);
+			break;
+		}
 	}
 	return 1;
 }
@@ -86,7 +90,7 @@ int split(char *s, int start, int end,char *retval) {
 	s_len = strlen(s);
 	char temp[MAXWORD];
 
-	if (end >= s_len || start < 0) {
+	if (end > s_len || start < 0) {
 		return 0;
 	}
 	for (int i = start; i <=end; i++) {
