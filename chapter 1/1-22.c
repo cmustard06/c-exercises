@@ -1,5 +1,6 @@
 #include<stdio.h>
-
+#include<stdlib.h>
+#include<string.h>
 /*
 把较长的的输入行折成短一些的两行和多行，折行的位置在输入行的
 第n列之前的最后一个非空格符之后，要保证程序能够智能地处理输入行很长以及在指定
@@ -17,7 +18,7 @@ int main(int args, char *argv[]) {
 	//char *s = "aaa a	aa  a"; //3  5 8
 	char *s = "abcdefg";
 	char *temp;
-	temp = (char *)calloc(strlen(s) * sizeof(char));
+	temp = (char *)calloc(strlen(s),sizeof(char));
 	if (split(s, 2, 6, temp)!=0) {
 		printf("%s",temp);
 	}
@@ -29,7 +30,7 @@ int main(int args, char *argv[]) {
 */
 int* find_blank(char *s) {
 	//在堆区开辟空间存放数组(若是在栈区存放数组,随着函数结束,数组名指向的地址存放的内容也会被系统释放,而堆上的空间是由程序员自动给予分配和释放的)
-	int *blankloc=(int *)calloc(MAXROWS * sizeof(int));  
+	int *blankloc=(int *)calloc(MAXROWS,sizeof(int));  
 	int pos,isblank,index;
 	pos = 0, isblank = 0,index=0;
 	memset(blankloc, 0, sizeof(int)*MAXROWS);
