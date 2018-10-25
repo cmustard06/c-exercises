@@ -24,7 +24,7 @@ int CreateSemid(int nums);
 int GetSemid(int nums);
 
 //初始化信号量
-int InitSemid(int semid,int which,int _val);
+int InitSem(int semid,int which,int _val);
 
 //PV操作在于它的_op的值
 static int SemPV(int semid,int which,int _op);
