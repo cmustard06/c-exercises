@@ -24,11 +24,13 @@ V操作表示释放一个资源，V操作定义：S=S+1，
  */
 void *produce(void *ptr){
 	int idx = *(int*)ptr;
-	printf("in produce idx=%d g_write_index=%d g_read_index=%d\n", idx,g_write_index,g_read_index);
+	
 	//使用hasnsen模式 while 形式
 	while(1){
 		sem_wait(&produce_sem);//限制了生产者的并发数目,p操作
 		sem_wait(&lock); //对临界区的访问要加锁
+		sleep(2);
+		printf("in produce idx=%d g_write_index=%d g_read_index=%d\n", idx,g_write_index,g_read_index);
 		g_buff[g_write_index] = idx;
 		g_write_index = (g_write_index+1)%BUFF_SIZE;
 		sem_post(&lock); //V操作
@@ -42,6 +44,7 @@ void * consume(void *ptr){
 		sem_wait(&consume_sem);
 		sem_wait(&lock);
 		int data = g_buff[g_read_index];
+		sleep(1);
 		g_read_index = (g_read_index+1)%BUFF_SIZE;
 		printf("consume data=%d g_read_index=%d g_write_index=%d\n",data,g_read_index,g_write_index );
 		sem_post(&lock);
