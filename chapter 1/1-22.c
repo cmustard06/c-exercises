@@ -29,7 +29,6 @@ int main(int args, char *argv[]) {
 * 找到字符串中空格的位置，需要手动释放空间
 */
 void find_blank(char *s,int blankloc[],int s_len) {
-	//在堆区开辟空间存放数组(若是在栈区存放数组,随着函数结束,数组名指向的地址存放的内容也会被系统释放,而堆上的空间是由程序员自动给予分配和释放的)
 	int pos,isblank,index;
 	pos = 0, isblank = 0,index=0;
 	memset(blankloc, -1, sizeof(int)*s_len);
